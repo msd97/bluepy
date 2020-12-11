@@ -637,7 +637,8 @@ static bool handle_error_rsp(struct bt_att *att, uint8_t *pdu,
 	rsp = (void *) pdu;
 
 	*opcode = rsp->opcode;
-
+	
+	return false;
 	/* Attempt to change security */
 	if (!change_security(att, rsp->ecode))
 		return false;
