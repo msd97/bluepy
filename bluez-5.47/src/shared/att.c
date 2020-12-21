@@ -610,11 +610,8 @@ static bool change_security(struct bt_att *att, uint8_t ecode)
 	} else if (ecode == BT_ATT_ERROR_AUTHENTICATION) {
 		if (security < BT_ATT_SECURITY_MEDIUM)
 			security = BT_ATT_SECURITY_MEDIUM;
-		else if (security < BT_ATT_SECURITY_HIGH)
-			security = BT_ATT_SECURITY_HIGH;
-		else if (security < BT_ATT_SECURITY_FIPS)
-			security = BT_ATT_SECURITY_FIPS;
 		else
+			//Remove other levels to prevent pairing
 			return false;
 	} else {
 		return false;
@@ -638,7 +635,7 @@ static bool handle_error_rsp(struct bt_att *att, uint8_t *pdu,
 
 	*opcode = rsp->opcode;
 	
-	//Don't actually change security
+	//Don't allow security level change
 	return false;
 	/* Attempt to change security */
 	if (!change_security(att, rsp->ecode))

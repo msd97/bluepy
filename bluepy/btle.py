@@ -385,7 +385,10 @@ class BluepyHelper:
                 if errcode=='nomgmt':
                     raise BTLEManagementError("Management not available (permissions problem?)", resp)
                 elif errcode=='atterr':
-                    raise BTLEGattError("Bluetooth command failed", resp)
+                    # TODO: Try not raising error
+                    print("Bluetooth command failed", resp)
+                    break
+                    # raise BTLEGattError("Bluetooth command failed", resp)
                 else:
                     raise BTLEException("Error from bluepy-helper (%s)" % errcode, resp)
             elif respType == 'scan':
@@ -864,7 +867,6 @@ class Scanner(BluepyHelper):
                 isNewData = dev._update(resp)
                 if self.delegate is not None:
                     self.delegate.handleDiscovery(dev, (dev.updateCount <= 1), isNewData)
-                 
             else:
                 raise BTLEInternalError("Unexpected response: " + respType, resp)
 
